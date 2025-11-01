@@ -5,12 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Technical Investment Association (TIA)</title>
   <meta name="description" content="Where investment meets technology."/>
+
+  <!-- Fonts + compiled Tailwind -->
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/app.css"/>
+
+  <!-- Favicon (place the file at public/assets/logo2.png) -->
   <link rel="icon" href="/assets/logo2.png" type="image/png"/>
+
+  <!-- Page logic (imports firebaseClient.js internally) -->
   <script type="module" src="/src/js/home.js" defer></script>
 </head>
+
 <body class="bg-surface-1 text-ash-700 antialiased">
+  <!-- Header include -->
+  <div data-include="header"></div>
 
   <!-- HERO -->
   <section class="bg-brand-navy text-white">
@@ -92,5 +101,10 @@
     </div>
   </section>
 
+  <!-- Footer include -->
+  <div data-include="footer"></div>
+
+  <!-- Include loader (kept last so it runs after DOM is ready) -->
+  <script type="module" src="/src/js/includes.js"></script>
 </body>
 </html>

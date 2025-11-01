@@ -8,6 +8,22 @@
   --surface-1:#fff; --surface-2:#F5F7F8; --line:#E3E6EA; --beige:#EFE7DD;
 }
 
+@layer components {
+    /* Hard cap the logo box size; trims transparent padding via overflow */
+    .logo-box {
+      height: 40px;          /* tweak: 28–40px depending on taste */
+      width: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    /* wider spacing between desktop nav items */
+    .nav-gap {
+      gap: 4rem;             /* 64px; try 3.5rem or 5rem if needed */
+    }
+  }
+
 /* Base typography */
 html { font-size: 100%; }
 body {

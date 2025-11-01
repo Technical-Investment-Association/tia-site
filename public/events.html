@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Events • TIA</title>
+  <meta name="description" content="Upcoming opportunities and past highlights at the intersection of finance and technology."/>
+  <link rel="stylesheet" href="/assets/app.css"/>
+  <link rel="icon" href="/assets/logo2.png" type="image/png"/>
+
+  <!-- Inject header/footer -->
+  <script type="module" src="/src/js/includes.js" defer></script>
+
+  <!-- Page logic (modular Firestore) -->
+  <script type="module" src="/src/js/events.js" defer></script>
+</head>
+<body class="bg-surface-1 text-ash-700 antialiased">
+  <div data-include="header"></div>
+
+  <!-- Header band -->
+  <section class="section-alt">
+    <div class="mx-auto max-w-7xl px-6 py-10 md:py-14">
+      <h1 class="text-brand-navy text-2xl md:text-3xl font-semibold">Events</h1>
+      <p class="mt-2 max-w-3xl text-ash-500">
+        Upcoming opportunities and past highlights at the intersection of finance and technology.
+      </p>
+    </div>
+  </section>
+
+  <main class="mx-auto max-w-7xl px-6 py-10 md:py-14">
+    <!-- Upcoming -->
+    <section aria-labelledby="upcoming-title">
+      <div class="flex items-end justify-between">
+        <h2 id="upcoming-title" class="text-xl md:text-2xl font-semibold text-brand-navy">Upcoming</h2>
+        <div id="upcomingCount" class="text-sm text-ash-500"></div>
+      </div>
+
+      <!-- Skeleton while loading -->
+      <div id="upcomingSkeleton" class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="card h-56 animate-pulse bg-surface-2"></div>
+        <div class="card h-56 animate-pulse bg-surface-2 hidden sm:block"></div>
+        <div class="card h-56 animate-pulse bg-surface-2 hidden lg:block"></div>
+      </div>
+
+      <div id="upcomingGrid" class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+    </section>
+
+    <!-- Past -->
+    <section class="mt-14" aria-labelledby="past-title">
+      <div class="flex items-end justify-between">
+        <h2 id="past-title" class="text-xl md:text-2xl font-semibold text-brand-navy">Past Events & Recaps</h2>
+        <div id="pastCount" class="text-sm text-ash-500"></div>
+      </div>
+
+      <!-- Skeleton while loading -->
+      <div id="pastSkeleton" class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="card h-56 animate-pulse bg-surface-2"></div>
+        <div class="card h-56 animate-pulse bg-surface-2 hidden sm:block"></div>
+        <div class="card h-56 animate-pulse bg-surface-2 hidden lg:block"></div>
+      </div>
+
+      <div id="pastGrid" class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+    </section>
+
+    <div id="eventsStatus" class="mt-8 text-sm text-ash-500" aria-live="polite"></div>
+  </main>
+
+  <div data-include="footer"></div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Join • TIA</title>
+  <meta name="description" content="Become a member of TIA."/>
+  <link rel="stylesheet" href="/assets/app.css"/>
+  <link rel="icon" href="/assets/logo2.png" type="image/png"/>
+  <script type="module" src="/src/js/includes.js" defer></script>
+</head>
+<body class="bg-surface-1 text-ash-700 antialiased">
+  <div data-include="header"></div>
+
+  <section class="bg-brand-navy text-white">
+    <div class="mx-auto max-w-7xl px-6 py-12 md:py-16">
+      <h1 class="text-white-100 text-3xl md:text-4xl font-semibold">Join TIA</h1>
+      <p class="mt-3 text-white-400 max-w-2xl">We’re open to all students interested in finance + tech.</p>
+    </div>
+  </section>
+
+  <main class="mx-auto max-w-7xl px-6 py-10 md:py-12">
+    <form class="card grid gap-4 max-w-xl">
+      <div>
+        <label class="block text-sm font-medium text-brand-navy">Name</label>
+        <input type="text" class="mt-1" placeholder="Your name" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-brand-navy">Email</label>
+        <input type="email" class="mt-1" placeholder="you@ntnu.no" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-brand-navy">Study program</label>
+        <input type="text" class="mt-1" placeholder="e.g., Indøk" />
+      </div>
+      <button type="submit" class="btn-primary mt-2">Submit</button>
+    </form>
+  </main>
+
+  <div data-include="footer"></div>
+</body>
+</html>
