@@ -1,0 +1,23 @@
+{
+  "name": "tia-site",
+  "version": "1.0.0",
+  "description": "Technical Investment Association (TIA) website built with Tailwind v4, Vite, and Firebase.",
+  "author": "Nora Johannessen",
+  "license": "ISC",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:css": "tailwindcss -i ./src/css/globals.css -o ./public/assets/app.css -w",
+    "build:css": "tailwindcss -i ./src/css/globals.css -o ./public/assets/app.css -m",
+    "build": "npm run build:css && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.16",
+    "tailwindcss": "^4.1.16",
+    "vite": "^7.1.12"
+  },
+  "dependencies": {
+    "firebase": "^12.5.0"
+  }
+}
