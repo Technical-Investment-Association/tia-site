@@ -3,38 +3,97 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Join • TIA</title>
-  <meta name="description" content="Become a member of TIA."/>
+  <title>Join • Technical Investment Association</title>
+  <meta name="description" content="Join a selective network at the intersection of investment and technology."/>
   <link rel="stylesheet" href="/assets/app.css"/>
-  <link rel="icon" href="/assets/logo_dark.png" type="image/png"/>
+  <link rel="icon" href="/assets/logo2.png" type="image/png"/>
   <script type="module" src="/src/js/includes.js" defer></script>
+
+  <style>
+    /* 1) Deep, premium background */
+    body { background: radial-gradient(1200px 600px at 50% -10%, rgba(255,255,255,.06), transparent 55%),
+                       linear-gradient(180deg, #0C223F 0%, #081931 55%, #071528 100%); }
+
+    /* Section spacing */
+    main { min-height: 85vh; display:flex; align-items:center; justify-content:center; padding: 6rem 1.25rem; }
+
+    /* 2/3) Invitation card */
+    .card-invite{
+      --beige-soft: color-mix(in oklab, var(--beige) 92%, white);
+      background: var(--beige-soft);
+      color: var(--brand-navy);
+      max-width: 680px; width: 100%;
+      padding: 3rem 2.25rem;
+      border-radius: 20px;
+      border: 1px solid rgba(7,21,40,.08);             /* hairline */
+      box-shadow:
+        0 24px 50px rgba(0,0,0,.25),                  /* deep drop */
+        inset 0 1px 0 rgba(255,255,255,.55);          /* embossed edge */
+      text-align: center;
+    }
+
+    /* Headline in serif for gravitas (uses your system serif) */
+    .headline{
+      font-family: "Times New Roman","Georgia",serif;
+      font-weight: 600;
+      font-size: clamp(2rem, 4.8vw, 2.75rem);
+      line-height: 1.15;
+      letter-spacing: .2px;
+      margin-bottom: .9rem;
+      color: var(--brand-navy);
+    }
+
+    /* Subcopy: quieter, slightly tightened */
+    .sub{
+      color: #2c3b50;
+      max-width: 52ch;
+      margin: 0 auto 2.2rem;
+      line-height: 1.55;
+      letter-spacing: .1px;
+    }
+
+    /* 4) Pill CTA – brown outline -> brown fill, beige text; subtle lift + glow */
+    .cta{
+      display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
+      padding: .9rem 1.6rem;
+      border-radius: 999px;
+      border: 2px solid var(--brand-brown);
+      color: var(--brand-brown);
+      background: transparent;
+      font-weight: 700; text-transform: uppercase; letter-spacing: .6px;
+      text-decoration:none;
+      transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease, color .18s ease;
+    }
+    .cta:hover{
+      background: var(--brand-brown);
+      color: var(--beige);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(59,46,38,.26);
+    }
+
+    /* Small “divider” line for refinement */
+    .rule{ width: 56px; height: 2px; margin: 0.75rem auto 1.75rem; background: rgba(7,21,40,.18); border-radius: 2px; }
+  </style>
 </head>
-<body class="bg-surface-1 text-ash-700 antialiased">
+<body class="antialiased">
   <div data-include="header"></div>
 
-  <section class="bg-brand-navy text-white">
-    <div class="mx-auto max-w-7xl px-6 py-12 md:py-16">
-      <h1 class="text-white-100 text-3xl md:text-4xl font-semibold">Join TIA</h1>
-      <p class="mt-3 text-white-400 max-w-2xl">We’re open to all students interested in finance + tech.</p>
-    </div>
-  </section>
-
-  <main class="mx-auto max-w-7xl px-6 py-10 md:py-12">
-    <form class="card grid gap-4 max-w-xl">
-      <div>
-        <label class="block text-sm font-medium text-brand-navy">Name</label>
-        <input type="text" class="mt-1" placeholder="Your name" />
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-brand-navy">Email</label>
-        <input type="email" class="mt-1" placeholder="you@ntnu.no" />
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-brand-navy">Study program</label>
-        <input type="text" class="mt-1" placeholder="e.g., Indøk" />
-      </div>
-      <button type="submit" class="btn-primary mt-2">Submit</button>
-    </form>
+  <main>
+    <article class="card-invite">
+      <h1 class="headline">Join the network</h1>
+      <div class="rule"></div>
+      <p class="sub">
+        Access to events and workshops. Conversations with industry. A community of ambitious peers.
+        Stay close to opportunities across finance and technology.
+      </p>
+      <a class="cta"
+         href="https://docs.google.com/forms/d/e/1FAIpQLSfdjqQXcTbdAB4WqCfq2vBo5yeGOIinAqqsVrv7vU-dsSiq8A/viewform?ref=join-invite"
+         target="_blank" rel="noopener noreferrer">
+        Become a member
+        <!-- optional arrow glyph -->
+        <span aria-hidden>→</span>
+      </a>
+    </article>
   </main>
 
   <div data-include="footer"></div>
