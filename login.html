@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Admin Login • TIA</title>
+  <meta name="description" content="Sign in to manage events and job postings."/>
+  <link rel="stylesheet" href="/assets/app.css"/>
+  <link rel="icon" href="/assets/logo2.png" type="image/png"/>
+  <script type="module" src="/src/js/includes.js" defer></script>
+  <script type="module" src="/src/js/login.js" defer></script>
+</head>
+<body class="bg-surface-1 text-ash-700 antialiased">
+  <div data-include="header"></div>
+
+  <main class="mx-auto max-w-md px-6 py-12">
+    <h1 class="text-2xl font-semibold text-brand-navy">Admin login</h1>
+    <p class="mt-2 text-ash-500">Only authorized admins can access the dashboard.</p>
+
+    <form id="email-form" class="card mt-6 space-y-3 p-4">
+      <label class="block">
+        <span class="text-sm font-medium text-brand-navy">Email</span>
+        <input id="email" type="email" required class="mt-1 input w-full" placeholder="you@company.com"/>
+      </label>
+      <label class="block">
+        <span class="text-sm font-medium text-brand-navy">Password</span>
+        <input id="password" type="password" required class="mt-1 input w-full" placeholder="••••••••"/>
+      </label>
+      <button class="btn-primary w-full" type="submit">Sign in</button>
+      <p id="email-error" class="text-sm text-red-600 hidden"></p>
+    </form>
+
+    <div class="mt-4 text-center">
+      <button id="google-btn" class="btn-secondary w-full">Continue with Google</button>
+    </div>
+
+    <p id="login-status" class="mt-4 text-sm text-ash-500"></p>
+  </main>
+
+  <div data-include="footer"></div>
+</body>
+</html>

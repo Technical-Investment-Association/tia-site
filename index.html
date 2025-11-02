@@ -15,6 +15,8 @@
 
   <!-- Page logic (imports firebaseClient.js internally) -->
   <script type="module" src="/src/js/home.js" defer></script>
+  <script type="module" src="/src/js/includes.js" defer></script>
+  <script type="module" src="/src/js/home.js" defer></script>
 </head>
 
 <body class="bg-surface-1 text-ash-700 antialiased">
@@ -27,7 +29,13 @@
       <h1 class="text-white-100 text-3xl md:text-5xl font-semibold leading-tight">Where investment meets technology.</h1>
       <p class="mt-4 max-w-3xl text-white-400 text-sm md:text-base">Bridging finance and technology through collaboration, learning, and innovation.</p>
       <div class="mt-8 flex flex-wrap gap-3">
-        <a href="./join.html" class="btn-secondary">Join us</a>
+        <a href="./join.html"
+   class="btn-secondary !text-white hover:!text-white
+          transform transition-transform duration-200 hover:scale-105">
+  Join us
+</a>
+
+
       </div>
     </div>
   </section>

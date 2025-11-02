@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Admin Dashboard • TIA</title>
+  <meta name="description" content="Create and manage events and job postings."/>
+  <link rel="stylesheet" href="/assets/app.css"/>
+  <link rel="icon" href="/assets/logo2.png" type="image/png"/>
+  <script type="module" src="/src/js/includes.js" defer></script>
+  <script type="module" src="/src/js/admin.js" defer></script>
+</head>
+<body class="bg-surface-1 text-ash-700 antialiased">
+  <div data-include="header"></div>
+
+  <main class="mx-auto max-w-5xl px-6 py-10">
+    <div id="gate" class="card p-4">
+      <p class="text-ash-600">Checking admin access…</p>
+    </div>
+
+    <section id="admin-ui" class="hidden">
+      <div class="flex items-center justify-between">
+        <h1 class="text-2xl font-semibold text-brand-navy">Admin dashboard</h1>
+        <div class="flex items-center gap-3">
+          <span id="user-info" class="text-sm text-ash-500"></span>
+          <button id="signout-btn" class="btn-secondary">Sign out</button>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="mt-8 grid gap-8 md:grid-cols-2">
+        <!-- Create Event -->
+        <form id="event-form" class="card p-4 space-y-3">
+          <h2 class="text-lg font-semibold text-brand-navy">Create event</h2>
+          <label class="block">
+            <span class="text-sm">Title *</span>
+            <input name="title" class="input w-full" required />
+          </label>
+
+          <div class="grid gap-3 sm:grid-cols-2">
+            <label class="block">
+              <span class="text-sm">Starts at *</span>
+              <input name="starts_at" type="datetime-local" class="input w-full" required />
+            </label>
+            <label class="block">
+              <span class="text-sm">Ends at (optional)</span>
+              <input name="ends_at" type="datetime-local" class="input w-full" />
+            </label>
+          </div>
+
+          <label class="block">
+            <span class="text-sm">Location</span>
+            <input name="location" class="input w-full" />
+          </label>
+
+          <label class="block">
+            <span class="text-sm">Description</span>
+            <textarea name="description" rows="4" class="input w-full"></textarea>
+          </label>
+
+          <div class="grid gap-3 sm:grid-cols-2">
+            <label class="block">
+              <span class="text-sm">Apply URL</span>
+              <input name="apply_url" type="url" class="input w-full" />
+            </label>
+            <label class="block">
+              <span class="text-sm">Company</span>
+              <input name="company" class="input w-full" />
+            </label>
+          </div>
+
+          <label class="inline-flex items-center gap-2">
+            <input name="published" type="checkbox" class="checkbox" />
+            <span class="text-sm">Published</span>
+          </label>
+
+          <button class="btn-primary w-full" type="submit">Add event</button>
+          <p id="event-msg" class="text-sm text-ash-500"></p>
+        </form>
+
+        <!-- Create Job -->
+        <form id="job-form" class="card p-4 space-y-3">
+          <h2 class="text-lg font-semibold text-brand-navy">Create job</h2>
+          <label class="block">
+            <span class="text-sm">Title *</span>
+            <input name="title" class="input w-full" required />
+          </label>
+          <div class="grid gap-3 sm:grid-cols-2">
+            <label class="block">
+              <span class="text-sm">Company</span>
+              <input name="company" class="input w-full" />
+            </label>
+            <label class="block">
+              <span class="text-sm">Type *</span>
+              <select name="type" class="input w-full" required>
+                <option>Internship</option>
+                <option>Part-time</option>
+                <option>Full-time</option>
+                <option>Contract</option>
+              </select>
+            </label>
+          </div>
+          <div class="grid gap-3 sm:grid-cols-2">
+            <label class="block">
+              <span class="text-sm">Location *</span>
+              <input name="location" class="input w-full" required />
+            </label>
+            <label class="inline-flex items-center gap-2 mt-6">
+              <input name="remote" type="checkbox" class="checkbox" />
+              <span class="text-sm">Remote</span>
+            </label>
+          </div>
+          <label class="block">
+            <span class="text-sm">Apply URL *</span>
+            <input name="apply_url" type="url" class="input w-full" required />
+          </label>
+          <label class="block">
+            <span class="text-sm">Short description</span>
+            <textarea name="description" rows="4" class="input w-full"></textarea>
+          </label>
+          <button class="btn-primary w-full" type="submit">Add job</button>
+          <p id="job-msg" class="text-sm text-ash-500"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <div data-include="footer"></div>
+</body>
+</html>

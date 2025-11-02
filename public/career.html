@@ -22,8 +22,8 @@
   <main class="mx-auto max-w-7xl px-6 py-10 md:py-12">
     <section>
       <h2 class="text-xl font-semibold text-brand-navy">Open positions</h2>
-      <div class="mt-4 flex gap-6 overflow-x-auto pb-2">
-        <!-- job cards -->
+      <div class="mt-4 flex gap-6 overflow-x-auto pb-2" id="jobs-strip">
+        <!-- fallback card (will be replaced by Firestore data if available) -->
         <article class="card min-w-[260px]">
           <h3 class="font-semibold text-brand-navy">Analyst Intern</h3>
           <p class="text-sm text-ash-500">Oslo · Internship</p>
@@ -42,5 +42,9 @@
   </main>
 
   <div data-include="footer"></div>
+
+  <!-- minimal addition to load jobs from Firestore -->
+  <script type="module" src="/src/js/career.js" defer></script>
+
 </body>
 </html>

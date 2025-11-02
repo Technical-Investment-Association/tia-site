@@ -1,6 +1,7 @@
-// src/js/firebaseClient.js (ES module)
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+
 
 const firebaseConfig = {
   apiKey:            import.meta.env.VITE_FB_API_KEY,
@@ -12,12 +13,15 @@ const firebaseConfig = {
   measurementId:     import.meta.env.VITE_FB_MEASUREMENT_ID
 };
 
-// Reuse app if already initialized (dev HMR)
-const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+const app  = getApps().length ? getApp() : initializeApp(firebaseConfig);
+const db   = getFirestore(app);
+const auth = getAuth(app);
 
-// Export named bindings (what events.js imports)
-export const db = getFirestore(app);
-// Optional: export app if you need it elsewhere
-export { app };
+export { app, db, auth };
+
+// in firebaseClient.js, after creating auth
+if (import.meta.env.DEV) {
+    window.__FIREBASE = { auth, db, app };
+  }  
 
 console.log("[firebaseClient] module loaded, db exported", !!db);
