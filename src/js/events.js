@@ -14,7 +14,6 @@ const pastSkel       = document.getElementById("pastSkeleton");
 const dateOnlyFmt = new Intl.DateTimeFormat(undefined, {
   day: "2-digit",
   month: "short",
-  year: "numeric",
 });
 
 const toDate = (v) => (v?.toDate ? v.toDate() : v ? new Date(v) : null);

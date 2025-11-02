@@ -1,0 +1,55 @@
+<!-- Admin Header -->
+<header class="border-b border-[var(--line)] bg-brand-navy text-white">
+    <!-- Beige top accent -->
+    <div class="h-[6px] w-full bg-beige"></div>
+  
+    <div class="mx-auto max-w-7xl px-6 h-20 flex items-center justify-between">
+      <!-- Logo + wordmark -->
+      <a href="/admin.html" aria-label="Admin Home" class="flex items-center gap-3 shrink-0">
+        <div class="logo-box md:h-9 md:w-9 lg:h-10 lg:w-10">
+          <img src="/assets/logo_light.png" alt="TIA logo" class="max-h-full max-w-full object-contain" />
+        </div>
+        <span class="text-2xl tracking-wide text-white select-none font-serif"
+              style="font-family:'Times New Roman','Georgia',serif">
+          TIA Admin
+        </span>
+      </a>
+  
+      <!-- Desktop nav -->
+      <nav class="hidden md:flex items-center gap-10 text-sm font-medium">
+        <a href="/admin-events.html"   class="nav-underline">Events</a>
+        <a href="/admin-jobs.html"     class="nav-underline">Jobs</a>
+        <a href="/admin-news.html"     class="nav-underline">News</a>
+        <a href="/admin-sponsors.html" class="nav-underline">Sponsors</a>
+  
+        <!-- Exit Admin button -->
+        <a href="/index.html" class="inline-flex items-center rounded-lg px-4 py-2 btn-exit-admin">
+          Exit Admin
+        </a>
+      </nav>
+  
+      <!-- Mobile toggle -->
+      <button id="menuBtn"
+              class="md:hidden p-2 rounded-lg border border-beige"
+              aria-controls="mobileMenu" aria-expanded="false">
+        <span class="sr-only">Open menu</span>
+        <div class="h-0.5 w-5 bg-beige mb-1"></div>
+        <div class="h-0.5 w-5 bg-beige mb-1"></div>
+        <div class="h-0.5 w-5 bg-beige"></div>
+      </button>
+    </div>
+  
+    <!-- Mobile menu -->
+    <div id="mobileMenu" class="md:hidden hidden border-t border-beige bg-brand-navy">
+      <div class="px-6 py-4 grid gap-1 text-sm font-medium">
+        <a class="block py-3 text-white hover:text-beige" href="/admin-events.html">Events</a>
+        <a class="block py-3 text-white hover:text-beige" href="/admin-jobs.html">Jobs</a>
+        <a class="block py-3 text-white hover:text-beige" href="/admin-news.html">News</a>
+        <a class="block py-3 text-white hover:text-beige" href="/admin-sponsors.html">Sponsors</a>
+        <a class="block py-3 rounded-lg bg-beige text-brand-navy text-center hover:opacity-90" href="/index.html">
+          Exit Admin
+        </a>
+      </div>
+    </div>
+  </header>
+  

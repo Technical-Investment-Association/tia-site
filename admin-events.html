@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Admin • Events</title>
+  <meta name="description" content="Create and manage public events."/>
+  <link rel="stylesheet" href="/assets/app.css"/>
+  <link rel="icon" href="/assets/logo_light.png" type="image/png"/>
+  <script type="module" src="/src/js/includes.js" defer></script>
+  <script type="module" src="/src/js/admin-events.js" defer></script>
+</head>
+<body class="bg-surface-1 text-ash-700 antialiased">
+  <div data-include="admin-header"></div>
+
+  <main class="mx-auto max-w-5xl px-6 py-10 md:py-12">
+    <!-- Top bar -->
+    <div class="flex items-center justify-between gap-4">
+      <div>
+        <h1 class="text-brand-navy text-2xl font-semibold">Events</h1>
+        <p class="text-sm text-ash-500">Create and manage public events on the site.</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="public/events.html" class="btn-outline">View site</a>
+        <button id="signout-btn" class="btn-primary">Sign out</button>
+      </div>
+    </div>
+
+    <!-- Gate -->
+    <div id="gate" class="mt-6"></div>
+
+    <!-- Form -->
+    <section id="admin-ui" class="hidden mt-8 card">
+      <div class="flex items-center justify-between">
+        <h2 id="formTitle" class="text-brand-navy text-xl font-semibold">Add event</h2>
+        <button id="resetFormBtn" class="btn-outline hidden" type="button">Cancel edit</button>
+      </div>
+
+      <form id="eventForm" class="grid gap-3 mt-4">
+        <input id="ev_id" type="hidden"/>
+
+        <div class="grid md:grid-cols-2 gap-3">
+          <input id="title" class="border rounded-lg px-4 py-3" placeholder="Title *" required />
+          <input id="company" class="border rounded-lg px-4 py-3" placeholder="Company (optional)" />
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-3">
+          <input id="location" class="border rounded-lg px-4 py-3" placeholder="Location (e.g., Copenhagen)"/>
+          <input id="apply_url" class="border rounded-lg px-4 py-3" placeholder="Apply URL (optional)"/>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-3">
+          <label class="text-sm">
+            <span class="block mb-1 text-ash-500">Starts at *</span>
+            <input id="starts_at" type="datetime-local" class="border rounded-lg px-4 py-3 w-full" required />
+          </label>
+          <label class="text-sm">
+            <span class="block mb-1 text-ash-500">Ends at (optional)</span>
+            <input id="ends_at" type="datetime-local" class="border rounded-lg px-4 py-3 w-full" />
+          </label>
+        </div>
+
+        <textarea id="description" rows="3" class="border rounded-lg px-4 py-3" placeholder="Short description"></textarea>
+
+        <div class="grid md:grid-cols-2 gap-3">
+          <input id="image_url" class="border rounded-lg px-4 py-3" placeholder="Image URL (optional)" />
+        </div>
+
+        <label class="inline-flex items-center gap-2 text-sm">
+          <input id="published" type="checkbox" />
+          <span>Published</span>
+        </label>
+
+        <div class="flex items-center gap-3">
+          <button class="btn-primary" type="submit" id="saveBtn">Save event</button>
+          <span id="eventMsg" class="text-sm text-ash-500"></span>
+        </div>
+      </form>
+    </section>
+
+    <!-- List -->
+    <section class="mt-8">
+      <div class="flex items-center justify-between">
+        <h2 class="text-brand-navy text-xl font-semibold">All events</h2>
+        <div class="text-sm text-ash-500">Newest first</div>
+      </div>
+      <div id="eventsList" class="mt-4 grid gap-4"></div>
+    </section>
+  </main>
+
+  <div data-include="footer"></div>
+</body>
+</html>

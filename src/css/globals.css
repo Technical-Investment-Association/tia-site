@@ -207,3 +207,29 @@ img {
 .text-white-400  { color: var(--white-400); }
 
 :focus-visible { outline: 3px solid var(--nav-brown); outline-offset: 2px; }
+
+/* Admin header helpers (avoid arbitrary utilities) */
+.border-beige { border-color: var(--beige); }
+.text-beige   { color: var(--beige); }
+
+/* Exit button style */
+.btn-exit-admin {
+  border: 1px solid var(--beige);
+  color: var(--beige);
+  background: transparent;
+  transition: background-color .2s ease, color .2s ease;
+}
+.btn-exit-admin:hover {
+  background: var(--beige);
+  color: var(--brand-navy);
+}
+
+/* Simple underline on hover (instead of ::after) */
+.nav-underline {
+  border-bottom: 2px solid transparent;
+}
+.nav-underline:hover {
+  border-bottom-color: var(--beige);
+  color: var(--beige);
+}
+

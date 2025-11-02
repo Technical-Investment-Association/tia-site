@@ -3,124 +3,91 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Admin Dashboard • TIA</title>
-  <meta name="description" content="Create and manage events and job postings."/>
+  <title>Admin • TIA</title>
+  <meta name="description" content="TIA admin hub"/>
   <link rel="stylesheet" href="/assets/app.css"/>
-  <link rel="icon" href="/assets/logo_dark.png" type="image/png"/>
-  <script type="module" src="/src/js/includes.js" defer></script>
-  <script type="module" src="/src/js/admin.js" defer></script>
-</head>
-<body class="bg-surface-1 text-ash-700 antialiased">
-  <div data-include="header"></div>
+  <link rel="icon" href="/assets/logo_light.png" type="image/png"/>
 
-  <main class="mx-auto max-w-5xl px-6 py-10">
-    <div id="gate" class="card p-4">
-      <p class="text-ash-600">Checking admin access…</p>
+  <!-- Includes (header/footer) -->
+  <script type="module" src="/src/js/includes.js" defer></script>
+
+  <!-- Page logic -->
+  <script type="module">
+    import { requireAdmin, wireSignOut } from "/src/js/admin-common.js";
+    document.addEventListener("DOMContentLoaded", async () => {
+      await requireAdmin("/admin.html");
+      wireSignOut("signout-btn");
+      // Reveal UI after gate passes
+      document.getElementById("admin-ui")?.classList.remove("hidden");
+    });
+  </script>
+</head>
+
+<body class="bg-surface-1 text-ash-700 antialiased">
+  <!-- Navy admin header (from your admin include) -->
+  <div data-include="admin-header"></div>
+
+  <main class="mx-auto max-w-5xl px-6 py-10 md:py-12">
+    <!-- Top bar (matches Events/Jobs admin) -->
+    <div class="flex items-center justify-between gap-4">
+      <div>
+        <h1 class="text-brand-navy text-2xl font-semibold">Admin</h1>
+        <p class="text-sm text-ash-500">Choose a section to manage site content.</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="/index.html" class="btn-outline">View site</a>
+        <button id="signout-btn" class="btn-primary">Sign out</button>
+      </div>
     </div>
 
-    <section id="admin-ui" class="hidden">
-      <div class="flex items-center justify-between">
-        <h1 class="text-2xl font-semibold text-brand-navy">Admin dashboard</h1>
-        <div class="flex items-center gap-3">
-          <span id="user-info" class="text-sm text-ash-500"></span>
-          <button id="signout-btn" class="btn-secondary">Sign out</button>
-        </div>
-      </div>
+    <!-- Gate (shown only if not admin / not signed in) -->
+    <div id="gate" class="mt-6"></div>
 
-      <!-- Tabs -->
-      <div class="mt-8 grid gap-8 md:grid-cols-2">
-        <!-- Create Event -->
-        <form id="event-form" class="card p-4 space-y-3">
-          <h2 class="text-lg font-semibold text-brand-navy">Create event</h2>
-          <label class="block">
-            <span class="text-sm">Title *</span>
-            <input name="title" class="input w-full" required />
-          </label>
-
-          <div class="grid gap-3 sm:grid-cols-2">
-            <label class="block">
-              <span class="text-sm">Starts at *</span>
-              <input name="starts_at" type="datetime-local" class="input w-full" required />
-            </label>
-            <label class="block">
-              <span class="text-sm">Ends at (optional)</span>
-              <input name="ends_at" type="datetime-local" class="input w-full" />
-            </label>
+    <!-- Admin Hub -->
+    <section id="admin-ui" class="hidden mt-8">
+      <div class="grid gap-4 sm:grid-cols-2">
+        <a class="card card-hover" href="/admin-events.html">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-brand-navy font-semibold">Events</div>
+              <div class="meta mt-1">Create, publish, edit, and delete events</div>
+            </div>
+            <span aria-hidden>→</span>
           </div>
+        </a>
 
-          <label class="block">
-            <span class="text-sm">Location</span>
-            <input name="location" class="input w-full" />
-          </label>
-
-          <label class="block">
-            <span class="text-sm">Description</span>
-            <textarea name="description" rows="4" class="input w-full"></textarea>
-          </label>
-
-          <div class="grid gap-3 sm:grid-cols-2">
-            <label class="block">
-              <span class="text-sm">Apply URL</span>
-              <input name="apply_url" type="url" class="input w-full" />
-            </label>
-            <label class="block">
-              <span class="text-sm">Company</span>
-              <input name="company" class="input w-full" />
-            </label>
+        <a class="card card-hover" href="/admin-jobs.html">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-brand-navy font-semibold">Jobs</div>
+              <div class="meta mt-1">Create and maintain job listings</div>
+            </div>
+            <span aria-hidden>→</span>
           </div>
+        </a>
 
-          <label class="inline-flex items-center gap-2">
-            <input name="published" type="checkbox" class="checkbox" />
-            <span class="text-sm">Published</span>
-          </label>
-
-          <button class="btn-primary w-full" type="submit">Add event</button>
-          <p id="event-msg" class="text-sm text-ash-500"></p>
-        </form>
-
-        <!-- Create Job -->
-        <form id="job-form" class="card p-4 space-y-3">
-          <h2 class="text-lg font-semibold text-brand-navy">Create job</h2>
-          <label class="block">
-            <span class="text-sm">Title *</span>
-            <input name="title" class="input w-full" required />
-          </label>
-          <div class="grid gap-3 sm:grid-cols-2">
-            <label class="block">
-              <span class="text-sm">Company</span>
-              <input name="company" class="input w-full" />
-            </label>
-            <label class="block">
-              <span class="text-sm">Type *</span>
-              <select name="type" class="input w-full" required>
-                <option>Internship</option>
-                <option>Part-time</option>
-                <option>Full-time</option>
-                <option>Contract</option>
-              </select>
-            </label>
+        <!-- Future sections -->
+        <!--
+        <a class="card card-hover" href="/admin-news.html">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-brand-navy font-semibold">News</div>
+              <div class="meta mt-1">Publish announcements and recaps</div>
+            </div>
+            <span aria-hidden>→</span>
           </div>
-          <div class="grid gap-3 sm:grid-cols-2">
-            <label class="block">
-              <span class="text-sm">Location *</span>
-              <input name="location" class="input w-full" required />
-            </label>
-            <label class="inline-flex items-center gap-2 mt-6">
-              <input name="remote" type="checkbox" class="checkbox" />
-              <span class="text-sm">Remote</span>
-            </label>
+        </a>
+
+        <a class="card card-hover" href="/admin-board.html">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-brand-navy font-semibold">Board & Members</div>
+              <div class="meta mt-1">Maintain board profiles and roles</div>
+            </div>
+            <span aria-hidden>→</span>
           </div>
-          <label class="block">
-            <span class="text-sm">Apply URL *</span>
-            <input name="apply_url" type="url" class="input w-full" required />
-          </label>
-          <label class="block">
-            <span class="text-sm">Short description</span>
-            <textarea name="description" rows="4" class="input w-full"></textarea>
-          </label>
-          <button class="btn-primary w-full" type="submit">Add job</button>
-          <p id="job-msg" class="text-sm text-ash-500"></p>
-        </form>
+        </a>
+        -->
       </div>
     </section>
   </main>
