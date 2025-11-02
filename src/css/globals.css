@@ -205,6 +205,9 @@ img {
 .text-ash-500    { color: var(--ash-500); }
 .text-white-100  { color: var(--white-100); }
 .text-white-400  { color: var(--white-400); }
+.text-nav-brown { color: var(--nav-brown); }
+.text-brand-brown { color: var(--brand-brown); }
+
 
 :focus-visible { outline: 3px solid var(--nav-brown); outline-offset: 2px; }
 
