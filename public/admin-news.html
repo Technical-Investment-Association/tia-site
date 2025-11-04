@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Admin • News</title>
+  <meta name="description" content="Create and manage news articles."/>
+  <link rel="stylesheet" href="/assets/app.css"/>
+  <link rel="icon" href="/assets/logo_light.png" type="image/png"/>
+  <script type="module" src="/src/js/includes.js" defer></script>
+  <script type="module" src="/src/js/admin-news.js" defer></script>
+</head>
+<body class="bg-surface-1 text-ash-700 antialiased">
+  <div data-include="admin-header"></div>
+
+  <main class="mx-auto max-w-5xl px-6 py-10 md:py-12">
+    <!-- Header -->
+    <div class="flex items-center justify-between gap-4">
+      <div>
+        <h1 class="text-brand-navy text-2xl font-semibold">News</h1>
+        <p class="text-sm text-ash-500">Create and manage news articles.</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="/public/news.html" class="btn-outline">View site</a>
+        <button id="signout-btn" class="btn-primary">Sign out</button>
+      </div>
+    </div>
+
+    <!-- Auth gate (same pattern as jobs admin) -->
+    <div id="gate" class="mt-6"></div>
+
+    <!-- Admin UI -->
+    <section id="admin-ui" class="hidden mt-8 card">
+      <div class="flex items-center justify-between">
+        <h2 id="formTitle" class="text-brand-navy text-xl font-semibold">Add article</h2>
+        <button id="resetFormBtn" class="btn-outline hidden" type="button">Cancel edit</button>
+      </div>
+
+      <!-- News form -->
+      <form id="newsForm" class="grid gap-3 mt-4">
+        <input id="news_id" type="hidden"/>
+
+        <input id="header" class="border rounded-lg px-4 py-3" placeholder="Header *" required />
+
+        <div class="grid md:grid-cols-2 gap-3">
+          <input id="date" type="date" class="border rounded-lg px-4 py-3" required />
+          <div>
+            <label class="text-sm text-ash-600">Photo</label>
+            <input id="photo" type="file" accept="image/*" class="mt-1 block w-full" />
+            <div id="photoPreviewWrap" class="mt-2 hidden">
+              <img id="photoPreview" alt="preview" class="h-24 w-36 object-cover rounded-lg border" />
+            </div>
+          </div>
+        </div>
+
+        <textarea id="text" rows="8" class="border rounded-lg px-4 py-3" placeholder="Article text * (supports line breaks)" required></textarea>
+
+        <div class="flex items-center gap-3">
+          <button class="btn-primary" type="submit" id="saveBtn">Save article</button>
+          <span id="newsMsg" class="text-sm text-ash-500"></span>
+        </div>
+      </form>
+    </section>
+
+    <!-- Existing articles -->
+    <section class="mt-8">
+      <div class="flex items-center justify-between">
+        <h2 class="text-brand-navy text-xl font-semibold">All articles</h2>
+        <div class="text-sm text-ash-500">Newest first</div>
+      </div>
+      <div id="newsList" class="mt-4 grid gap-4"></div>
+    </section>
+  </main>
+
+  <div data-include="footer"></div>
+</body>
+</html>

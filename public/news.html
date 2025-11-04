@@ -4,10 +4,12 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>News • TIA</title>
-  <meta name="description" content="Announcements, recaps, and highlights from TIA."/>
+  <meta name="description" content="Updates, announcements, and highlights."/>
   <link rel="stylesheet" href="/assets/app.css"/>
   <link rel="icon" href="/assets/logo_dark.png" type="image/png"/>
   <script type="module" src="/src/js/includes.js" defer></script>
+  <!-- Pulls articles from Firestore and renders the list -->
+  <script type="module" src="/src/js/news.js" defer></script>
 </head>
 <body class="bg-surface-1 text-ash-700 antialiased">
   <div data-include="header"></div>
@@ -15,21 +17,18 @@
   <section class="bg-brand-navy text-white">
     <div class="mx-auto max-w-7xl px-6 py-12 md:py-16">
       <h1 class="text-white-100 text-3xl md:text-4xl font-semibold">News</h1>
-      <p class="mt-3 text-white-400 max-w-2xl">Stay updated with what’s happening in TIA.</p>
+      <p class="mt-3 text-white-400 max-w-2xl">Updates, announcements, and highlights.</p>
     </div>
   </section>
 
-  <main class="mx-auto max-w-7xl px-6 py-10 md:py-12">
-    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      <!-- Static placeholders; can be wired to Firestore later -->
-      <article class="card">
-        <div class="aspect-[16/9] rounded-xl bg-surface-2"></div>
-        <h2 class="mt-4 text-brand-navy font-semibold">Recruitment recap</h2>
-        <p class="text-sm text-ash-500 mt-1">Mon 9 Sep</p>
-        <p class="mt-2 text-sm">Highlights from our welcome meeting and Q&A.</p>
-      </article>
-    </div>
-  </main>
+  <!-- 3-column grid: left/right rails kept free, center shows articles -->
+  <main class="mx-auto max-w-7xl px-6 py-10 md:py-12 flex justify-center">
+  <div id="newsListInner" class="w-full max-w-3xl">
+    <!-- Filled by /src/js/news.js -->
+    <div class="text-ash-500 text-center">Loading news…</div>
+  </div>
+</main>
+
 
   <div data-include="footer"></div>
 </body>

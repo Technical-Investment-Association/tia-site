@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Article • TIA</title>
+  <meta name="description" content="Article details."/>
+  <link rel="stylesheet" href="/assets/app.css"/>
+  <link rel="icon" href="/assets/logo_dark.png" type="image/png"/>
+  <script type="module" src="/src/js/includes.js" defer></script>
+  <!-- Loads one article by id and renders it -->
+  <script type="module" src="/src/js/news-article.js" defer></script>
+</head>
+<body class="bg-surface-1 text-ash-700 antialiased">
+  <div data-include="header"></div>
+
+  <main class="mx-auto max-w-7xl px-6 py-10 md:py-12">
+    <div class="grid grid-cols-12 gap-6">
+
+      <!-- Left rail -->
+      <aside class="hidden lg:block col-span-2">
+        <div class="sticky top-6 space-y-4">
+          <div class="h-64 rounded-2xl border bg-white/60 flex items-center justify-center text-sm text-ash-500">Your advert here</div>
+          <div class="h-96 rounded-2xl border bg-white/60 flex items-center justify-center text-sm text-ash-500">Module</div>
+        </div>
+      </aside>
+
+      <!-- Article -->
+      <article class="col-span-12 lg:col-span-8">
+        <div id="articleCard" class="mx-auto max-w-3xl rounded-2xl border bg-white overflow-hidden">
+          <!-- Filled by /src/js/news-article.js -->
+          <div class="p-6"><div class="text-ash-500">Loading article…</div></div>
+        </div>
+
+        <div class="mx-auto max-w-3xl mt-6">
+          <a href="/public/news.html" class="text-brand-navy hover:text-nav-brown font-medium">← Back to news</a>
+        </div>
+      </article>
+
+      <!-- Right rail -->
+      <aside class="hidden lg:block col-span-2">
+        <div class="sticky top-6 h-[600px] rounded-2xl border bg-white/60 flex items-center justify-center text-sm text-ash-500">
+          Right rail
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <div data-include="footer"></div>
+</body>
+</html>

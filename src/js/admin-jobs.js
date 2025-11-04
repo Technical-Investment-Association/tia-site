@@ -29,7 +29,6 @@ async function loadJobs() {
             ${j.description ? `<div class="text-sm mt-1">${j.description}</div>` : ""}
           </div>
           <div class="flex items-center gap-2">
-            <a class="btn-outline" href="${j.apply_url || j.applyUrl || '#'}" target="_blank" rel="noopener">Apply</a>
             <button class="btn-outline" data-action="edit" data-id="${id}">Edit</button>
             <button class="btn-outline" data-action="delete" data-id="${id}">Delete</button>
           </div>

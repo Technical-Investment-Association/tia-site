@@ -6,21 +6,15 @@
   <title>Technical Investment Association (TIA)</title>
   <meta name="description" content="Where investment meets technology."/>
 
-  <!-- Fonts + compiled Tailwind -->
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/app.css"/>
-
-  <!-- Favicon (place the file at public/assets/logo2.png) -->
   <link rel="icon" href="/assets/logo_dark.png" type="image/png"/>
 
-  <!-- Page logic (imports firebaseClient.js internally) -->
-  <script type="module" src="/src/js/home.js" defer></script>
   <script type="module" src="/src/js/includes.js" defer></script>
   <script type="module" src="/src/js/home.js" defer></script>
 </head>
 
 <body class="bg-surface-1 text-ash-700 antialiased">
-  <!-- Header include -->
   <div data-include="header"></div>
 
   <!-- HERO -->
@@ -29,13 +23,7 @@
       <h1 class="text-white-100 text-3xl md:text-5xl font-semibold leading-tight">Where investment meets technology.</h1>
       <p class="mt-4 max-w-3xl text-white-400 text-sm md:text-base">Bridging finance and technology through collaboration, learning, and innovation.</p>
       <div class="mt-8 flex flex-wrap gap-3">
-        <a href="./join.html"
-   class="btn-secondary !text-white hover:!text-white
-          transform transition-transform duration-200 hover:scale-105">
-  Join us
-</a>
-
-
+        <a href="./join.html" class="btn-secondary !text-white hover:!text-white transform transition-transform duration-200 hover:scale-105">Join us</a>
       </div>
     </div>
   </section>
@@ -61,31 +49,45 @@
           <svg viewBox="0 0 48 48" class="arrow-ico"><path d="M18 6 L34 24 L18 42" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
       </div>
-
       <div id="homeEventsStatus" class="mt-4 text-sm text-ash-500" aria-live="polite"></div>
     </div>
   </section>
 
   <!-- NEWS -->
-  <section>
-    <div class="mx-auto max-w-7xl px-6 py-12 md:py-16">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div class="flex flex-col justify-between">
-          <div>
-            <h2 class="text-2xl md:text-3xl font-semibold text-brand-navy">News from the club</h2>
-            <p class="mt-3 text-ash-600 text-sm md:text-base">Highlights, recaps, and announcements from TIA. Stay in the loop.</p>
-          </div>
+<!-- NEWS -->
+<section>
+  <div class="mx-auto max-w-7xl px-6 py-12 md:py-16">
+    <!-- Two columns, no divider between them -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
+      <!-- Left: intro, vertically centered -->
+      <div class="flex">
+        <div class="my-auto w-full text-center md:text-left">
+          <h2 class="text-2xl md:text-3xl font-semibold text-brand-navy">News from the club</h2>
+          <p class="mt-3 text-ash-600 text-sm md:text-base">
+            Highlights, recaps, and announcements from TIA. Stay in the loop.
+          </p>
           <div class="mt-6">
-            <a href="./news.html" class="inline-flex items-center gap-2 font-medium text-brand-navy hover:text-nav-brown">Browse all news <span aria-hidden>→</span></a>
+            <a href="./news.html"
+               class="inline-flex items-center gap-2 font-medium text-brand-navy hover:text-nav-brown">
+              Browse all news <span aria-hidden>→</span>
+            </a>
           </div>
-        </div>
-        <div>
-          <div id="newsList" class="grid gap-6"></div>
-          <div id="newsStatus" class="mt-4 text-sm text-ash-500" aria-live="polite"></div>
         </div>
       </div>
+
+      <!-- Right: plain list (no images) with horizontal rules; extra padding to mimic visual gutter -->
+      <div class="md:pl-8">
+        <div id="newsList"
+             class="divide-y"
+             style="--tw-divide-opacity:1; border-color: var(--line);">
+          <!-- filled by JS -->
+        </div>
+        <div id="newsStatus" class="mt-4 text-sm text-ash-500" aria-live="polite"></div>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
+
 
   <!-- JOBS -->
   <section class="bg-beige">
@@ -109,10 +111,6 @@
     </div>
   </section>
 
-  <!-- Footer include -->
   <div data-include="footer"></div>
-
-  <!-- Include loader (kept last so it runs after DOM is ready) -->
-  <script type="module" src="/src/js/includes.js"></script>
 </body>
 </html>

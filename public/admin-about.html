@@ -1,0 +1,100 @@
+<!doctype html>
+<body class="bg-surface-1 text-ash-700 antialiased">
+<div data-include="admin-header"></div>
+
+<main class="mx-auto max-w-5xl px-6 py-10 md:py-12">
+<!-- Top bar -->
+<div class="flex items-center justify-between gap-4">
+<div>
+<h1 class="text-brand-navy text-2xl font-semibold">About page</h1>
+<p class="text-sm text-ash-500">Edit mission and manage team members.</p>
+</div>
+<div class="flex items-center gap-3">
+<a href="/public/about.html" class="btn-outline">View site</a>
+<button id="signout-btn" class="btn-primary">Sign out</button>
+</div>
+</div>
+
+<!-- Auth gate -->
+<div id="gate" class="mt-6"></div>
+
+<!-- Admin UI -->
+<section id="admin-ui" class="hidden mt-8 card">
+<!-- Mission editor -->
+<div class="flex items-center justify-between">
+<h2 class="text-brand-navy text-xl font-semibold">Mission</h2>
+<span id="missionMsg" class="text-sm text-ash-500"></span>
+</div>
+
+<form id="missionForm" class="mt-4 grid gap-3">
+<textarea id="missionText" rows="3" class="border rounded-lg px-4 py-3" placeholder="Short mission statement…" required></textarea>
+<div class="flex items-center gap-3">
+<button class="btn-primary" type="submit" id="saveMissionBtn">Save mission</button>
+</div>
+</form>
+</section>
+
+<!-- Team management -->
+<section class="mt-8 card">
+<div class="flex items-center justify-between">
+<h2 id="teamFormTitle" class="text-brand-navy text-xl font-semibold">Team</h2>
+<button id="resetMemberFormBtn" class="btn-outline hidden" type="button">Cancel edit</button>
+</div>
+
+<form id="memberForm" class="grid gap-3 mt-4">
+<input id="member_id" type="hidden"/>
+
+<div class="grid md:grid-cols-2 gap-3">
+<input id="member_name" class="border rounded-lg px-4 py-3" placeholder="Full name *" required />
+<input id="member_role" class="border rounded-lg px-4 py-3" placeholder="Role *" required />
+</div>
+
+<div class="grid md:grid-cols-2 gap-3">
+<input id="member_linkedin" class="border rounded-lg px-4 py-3" placeholder="LinkedIn URL (optional)" />
+<input id="member_image" class="border rounded-lg px-4 py-3" placeholder="Image URL (optional)" />
+</div>
+
+<label class="inline-flex items-center gap-2 text-sm">
+<input id="member_active" type="checkbox" checked />
+<span>Active</span>
+</label>
+
+<div class="flex items-center gap-3">
+<button class="btn-primary" type="submit" id="saveMemberBtn">Save member</button>
+<span id="memberMsg" class="text-sm text-ash-500"></span>
+</div>
+</form>
+</section>
+
+<!-- List of members -->
+<section class="mt-8">
+<div class="flex items-center justify-between">
+<h2 class="text-brand-navy text-xl font-semibold">All members</h2>
+<div class="text-sm text-ash-500">Newest first</div>
+</div>
+<div id="membersList" class="mt-4 grid gap-4"></div>
+
+<!-- Template for a member row/card (for JS to clone) -->
+<template id="memberRowTpl">
+<div class="card">
+<div class="flex items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-ash-200 overflow-hidden"></div>
+<div>
+<div class="font-medium text-ash-800" data-field="name">Full name</div>
+<div class="text-sm text-ash-500"><span data-field="role">Role</span> · <a data-field="linkedin" href="#" class="underline hover:no-underline">LinkedIn</a></div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="btn-outline" data-action="edit">Edit</button>
+<button class="btn-danger" data-action="delete">Delete</button>
+</div>
+</div>
+</div>
+</template>
+</section>
+</main>
+
+<div data-include="footer"></div>
+</body>
+</html>

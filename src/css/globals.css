@@ -208,7 +208,6 @@ img {
 .text-nav-brown { color: var(--nav-brown); }
 .text-brand-brown { color: var(--brand-brown); }
 
-
 :focus-visible { outline: 3px solid var(--nav-brown); outline-offset: 2px; }
 
 /* Admin header helpers (avoid arbitrary utilities) */

@@ -1,16 +1,19 @@
 import { db } from "./firebaseClient.js";
-import {
-  collection, query, where, orderBy, limit, getDocs
-} from "firebase/firestore";
+import { collection, query, where, orderBy, limit, getDocs } from "firebase/firestore";
 
-// Helpers
-const dateFmt = new Intl.DateTimeFormat(undefined, { weekday:"short", day:"2-digit", month:"short", year:"numeric" });
-const timeFmt = new Intl.DateTimeFormat(undefined, { hour:"2-digit", minute:"2-digit" });
-const toDate  = (v) => (v && v.toDate) ? v.toDate() : (v ? new Date(v) : null);
-const fmtDate = (ts) => { const d = toDate(ts); return d ? dateFmt.format(d) : ""; };
-const fmtTime = (ts) => { const d = toDate(ts); return d ? timeFmt.format(d) : ""; };
+/* ---------- Helpers ---------- */
+const toDate = (v) => (v && v.toDate) ? v.toDate() : (v ? new Date(v) : null);
+const fmtShortDayMonth = (v) => {
+  const d = toDate(v);
+  return d ? new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short" }).format(d) : "";
+};
+const fmtFullDate = (v) => {
+  const d = toDate(v);
+  return d ? new Intl.DateTimeFormat(undefined, { year:"numeric", month:"long", day:"numeric" }).format(d) : "";
+};
+const escapeHtml = (s = "") => String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
 
-// ---- DOM
+/* ---------- DOM ---------- */
 const eventsStatus = document.getElementById("homeEventsStatus");
 const track        = document.getElementById("cardTrack");
 const btnPrev      = document.getElementById("btnPrev");
@@ -24,11 +27,45 @@ const jobsStatus = document.getElementById("jobsStatus");
 const jobPrev    = document.getElementById("jobPrev");
 const jobNext    = document.getElementById("jobNext");
 
-// =========================
-// EVENTS (carousel)
-// =========================
+/* =========================================
+   EVENTS — windowed carousel over ALL items
+   ========================================= */
 let events = [];
-let idx = 0;
+let evIndex = 0;
+
+function eventCard(ev) {
+  const title   = ev.title || "Untitled event";
+  const company = ev.company || "";
+  const dateStr = fmtShortDayMonth(ev.starts_at);
+  const loc     = ev.location ? ` · ${ev.location}` : "";
+  const href    = `./event.html?id=${ev.id}`;
+  const image   = ev.image_url
+    ? `<img src="${ev.image_url}" alt="Poster for ${escapeHtml(title)}" loading="lazy" width="640" height="360" class="aspect-[16/9] w-full object-cover rounded-xl"/>`
+    : `<div class="aspect-[16/9] rounded-xl bg-surface-2"></div>`;
+
+  // Fixed slots: title, company, meta (one line each) + fixed CTA area
+  return `
+    <div class="w-full max-w-sm md:max-w-md">
+      <article class="card card-hover h-full flex flex-col">
+        ${image}
+        <div class="mt-4 flex-1 flex flex-col">
+          <h3 class="font-semibold text-brand-navy h-6 overflow-hidden text-ellipsis whitespace-nowrap">
+            ${escapeHtml(title)}
+          </h3>
+          <p class="text-sm text-ash-600 h-5 overflow-hidden text-ellipsis whitespace-nowrap">
+            ${escapeHtml(company)}
+          </p>
+          <p class="mt-1 text-sm meta h-5 overflow-hidden text-ellipsis whitespace-nowrap">
+            ${escapeHtml(dateStr + loc)}
+          </p>
+          <div class="mt-4 pt-2 border-t h-10 flex items-center" style="border-color: var(--line);">
+            <a href="${href}" class="inline-flex items-center gap-1 text-brand-navy hover:text-nav-brown font-medium">More →</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  `;
+}
 
 function renderEvents() {
   if (!events.length) {
@@ -38,36 +75,9 @@ function renderEvents() {
   }
   btnPrev.disabled = btnNext.disabled = (events.length < 2);
 
-  const center = idx % events.length;
-  const prev   = (center - 1 + events.length) % events.length;
-  const next   = (center + 1) % events.length;
-  const order  = (events.length === 1) ? [center] : (events.length === 2 ? [center, next] : [prev, center, next]);
-
-  track.innerHTML = order.map(i => {
-    const ev = events[i];
-    const start = toDate(ev.starts_at);
-    const end   = toDate(ev.ends_at);
-    const line  = start
-      ? `${fmtDate(ev.starts_at)}${fmtTime(ev.starts_at) ? " · " + fmtTime(ev.starts_at) : ""}${end ? " — " + fmtTime(ev.ends_at) : ""}`
-      : "";
-    const image = ev.image_url
-      ? `<img src="${ev.image_url}" alt="Poster for ${ev.title || 'event'}" loading="lazy" width="640" height="360" class="aspect-[16/9] w-full object-cover rounded-xl"/>`
-      : `<div class="aspect-[16/9] rounded-xl bg-surface-2"></div>`;
-
-    return `
-      <div class="w-full max-w-sm md:max-w-md transition-transform duration-200">
-        <article class="card card-hover">
-          ${image}
-          <h3 class="mt-4 font-semibold text-brand-navy">${ev.title || "Untitled event"}</h3>
-          <p class="mt-1 text-sm meta">${ev.location ? ev.location + (line ? " · " : "") : ""}${line}</p>
-          ${ev.description ? `<p class="mt-2 text-sm">${ev.description}</p>` : ""}
-          <div class="mt-4">
-            <a href="./event.html?id=${ev.id}" class="inline-flex items-center gap-1 text-brand-navy hover:text-nav-brown font-medium">More →</a>
-          </div>
-        </article>
-      </div>
-    `;
-  }).join("");
+  const count = Math.min(3, events.length);
+  const idxs = Array.from({ length: count }, (_, i) => (evIndex + i) % events.length);
+  track.innerHTML = idxs.map(i => eventCard(events[i])).join("");
 }
 
 async function loadEvents() {
@@ -76,17 +86,18 @@ async function loadEvents() {
     const q = query(
       collection(db, "events"),
       where("published", "==", true),
-      orderBy("created_at", "desc"),
-      limit(20)
+      orderBy("starts_at", "asc"),
+      limit(50)
     );
     const snap = await getDocs(q);
     const now = new Date();
     const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    // Only upcoming
     events = docs.filter(ev => {
       const s = toDate(ev.starts_at);
       return s && s >= now;
-    }).slice(0, 3);
-    idx = 0;
+    });
+    evIndex = 0;
     renderEvents();
     eventsStatus.textContent = "";
   } catch (err) {
@@ -95,47 +106,60 @@ async function loadEvents() {
   }
 }
 
-btnPrev?.addEventListener("click", () => { if (!events.length) return; idx = (idx - 1 + events.length) % events.length; renderEvents(); });
-btnNext?.addEventListener("click", () => { if (!events.length) return; idx = (idx + 1) % events.length; renderEvents(); });
+btnPrev?.addEventListener("click", () => {
+  if (!events.length) return;
+  evIndex = (evIndex - 1 + events.length) % events.length;
+  renderEvents();
+});
+btnNext?.addEventListener("click", () => {
+  if (!events.length) return;
+  evIndex = (evIndex + 1) % events.length;
+  renderEvents();
+});
 
-// =========================
-// NEWS (3 latest)
-// =========================
+/* =========================
+   NEWS — latest 3, no images
+   ========================= */
 async function loadNews() {
   newsStatus.textContent = "Loading…";
   try {
-    const q = query(
-      collection(db, "news"),
-      where("published", "==", true),
-      orderBy("created_at", "desc"),
-      limit(3)
-    );
+    // Expect: header (string), text (string), date (YYYY-MM-DD string), optional imageUrl
+    const q = query(collection(db, "news"), orderBy("date", "desc"), limit(3));
     const snap = await getDocs(q);
     const arts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
 
     if (!arts.length) {
-      newsList.innerHTML = `<div class="text-sm text-ash-500 py-2">No news yet. Check back soon.</div>`;
+      newsList.innerHTML = `
+        <div class="py-2 text-sm text-ash-500">No news yet. Check back soon.</div>
+      `;
       newsStatus.textContent = "";
       return;
     }
 
-    newsList.innerHTML = arts.map(a => {
-      const img = a.image_url
-        ? `<img src="${a.image_url}" alt="" loading="lazy" width="640" height="360" class="aspect-[16/9] w-full object-cover rounded-xl"/>`
-        : `<div class="aspect-[16/9] rounded-xl bg-surface-2"></div>`;
-      const when = a.created_at ? fmtDate(a.created_at) : "";
-      const href = a.slug ? `./article/${a.slug}` : `./article.html?id=${a.id}`;
+    newsList.innerHTML = arts.map((a) => {
+      const when  = a.date ? fmtFullDate(a.date) : "";
+      const title = a.header || "Untitled";
+      const href  = `./news-article.html?id=${a.id}`;
 
       return `
-        <article class="card card-hover">
-          ${img}
-          <div class="mt-4">
-            <span class="text-xs text-ash-500">${when}</span>
-            <h3 class="mt-1 font-semibold text-brand-navy">${a.title || "Untitled"}</h3>
-            ${a.summary ? `<p class="mt-2 text-sm">${a.summary}</p>` : ""}
+        <article class="py-6">
+          <div class="text-xs text-ash-500 h-4 overflow-hidden text-ellipsis whitespace-nowrap">
+            ${escapeHtml(when)}
           </div>
-          <div class="mt-4">
-            <a href="${href}" class="inline-flex items-center gap-1 text-brand-navy hover:text-nav-brown font-medium">Read more →</a>
+          <h3 class="mt-1 font-semibold text-brand-navy h-7 overflow-hidden text-ellipsis whitespace-nowrap">
+            ${escapeHtml(title)}
+          </h3>
+          ${
+            a.text
+              ? `<p class="mt-2 text-sm text-ash-700">
+                   ${escapeHtml(a.text)}
+                 </p>`
+              : ``
+          }
+          <div class="mt-3">
+            <a href="${href}" class="inline-flex items-center gap-1 text-brand-navy hover:text-nav-brown font-medium">
+              Read more →
+            </a>
           </div>
         </article>
       `;
@@ -148,11 +172,44 @@ async function loadNews() {
   }
 }
 
-// =========================
-/** JOBS (carousel, simple “window” of up to 3) */
-// =========================
+
+/* =========================================
+   JOBS — 3-up window scrolling over ALL
+   ========================================= */
 let jobs = [];
 let jx = 0;
+
+function jobCard(j) {
+  const title   = j.title || "Role";
+  const company = j.company || "";
+  const posted  = j.posted_at ? fmtFullDate(j.posted_at) : "";
+  const meta    = `${j.location ? `${j.location} · ` : ""}${j.type || ""}` +
+                  `${(j.location || j.type) ? " · " : ""}${posted ? `Posted ${posted}` : ""}`;
+  const logo = j.logo_url
+    ? `<img src="${j.logo_url}" alt="" loading="lazy" width="40" height="40" class="h-10 w-10 rounded bg-white object-cover ring-1 ring-black/5"/>`
+    : `<div class="h-10 w-10 rounded bg-surface-2 ring-1 ring-black/5"></div>`;
+  const applyHref = j.apply_url || `./job.html?id=${j.id}`;
+
+  return `
+    <div class="min-w-[260px] max-w-sm flex-1">
+      <article class="card card-hover h-full flex flex-col">
+        <div class="flex items-center gap-3">
+          ${logo}
+          <div class="min-w-0">
+            <h3 class="font-semibold text-brand-navy truncate h-6">${escapeHtml(title)}</h3>
+            <p class="text-sm text-ash-600 truncate h-5">${escapeHtml(company)}</p>
+          </div>
+        </div>
+        <p class="mt-2 text-sm meta h-5 overflow-hidden text-ellipsis whitespace-nowrap">
+          ${escapeHtml(meta)}
+        </p>
+        <div class="mt-4 pt-2 border-t h-10 flex items-center" style="border-color: var(--line);">
+          <a href="${applyHref}" class="inline-flex items-center gap-1 text-brand-navy hover:text-nav-brown font-medium">View & apply →</a>
+        </div>
+      </article>
+    </div>
+  `;
+}
 
 function renderJobs() {
   if (!jobs.length) {
@@ -162,51 +219,15 @@ function renderJobs() {
   }
   jobPrev.disabled = jobNext.disabled = (jobs.length < 2);
 
-  const visible = [];
-  const n = Math.min(3, jobs.length);
-  for (let k = 0; k < n; k++) visible.push((jx + k) % jobs.length);
-
-  jobTrack.innerHTML = visible.map(i => {
-    const j = jobs[i];
-    const posted = j.created_at ? fmtDate(j.created_at) : "";
-    const closes = j.closes_at ? fmtDate(j.closes_at) : "";
-    const logo = j.logo_url
-      ? `<img src="${j.logo_url}" alt="" loading="lazy" width="40" height="40" class="h-10 w-10 rounded bg-white object-cover ring-1 ring-black/5"/>`
-      : `<div class="h-10 w-10 rounded bg-surface-2 ring-1 ring-black/5"></div>`;
-    const applyHref = j.apply_url || `./job.html?id=${j.id}`;
-
-    return `
-      <div class="min-w-[260px] max-w-sm flex-1">
-        <article class="card card-hover h-full flex flex-col">
-          <div class="flex items-center gap-3">
-            ${logo}
-            <div class="min-w-0">
-              <h3 class="font-semibold text-brand-navy truncate">${j.title || "Role"}</h3>
-              <p class="text-sm text-ash-600 truncate">${j.company || ""}</p>
-            </div>
-          </div>
-          <p class="mt-2 text-sm meta">
-            ${j.location ? `${j.location} · ` : ""}${j.type || ""}${(j.location || j.type) ? " · " : ""}${posted ? `Posted ${posted}` : ""}
-          </p>
-          ${closes ? `<p class="mt-1 text-xs text-ash-500">Closes ${closes}</p>` : ""}
-          <div class="mt-4 pt-2 border-t" style="border-color: var(--line);">
-            <a href="${applyHref}" class="inline-flex items-center gap-1 text-brand-navy hover:text-nav-brown font-medium">View & apply →</a>
-          </div>
-        </article>
-      </div>
-    `;
-  }).join("");
+  const count = Math.min(3, jobs.length);
+  const idxs = Array.from({ length: count }, (_, i) => (jx + i) % jobs.length);
+  jobTrack.innerHTML = idxs.map(i => jobCard(jobs[i])).join("");
 }
 
 async function loadJobs() {
   jobsStatus.textContent = "Loading…";
   try {
-    const q = query(
-      collection(db, "jobs"),
-      where("published", "==", true),
-      orderBy("created_at", "desc"),
-      limit(12)
-    );
+    const q = query(collection(db, "jobs"), orderBy("posted_at", "desc"), limit(24));
     const snap = await getDocs(q);
     jobs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
     jx = 0;
@@ -221,7 +242,7 @@ async function loadJobs() {
 jobPrev?.addEventListener("click", () => { if (!jobs.length) return; jx = (jx - 1 + jobs.length) % jobs.length; renderJobs(); });
 jobNext?.addEventListener("click", () => { if (!jobs.length) return; jx = (jx + 1) % jobs.length; renderJobs(); });
 
-// Init
+/* ---------- Init ---------- */
 window.addEventListener("DOMContentLoaded", () => {
   loadEvents();
   loadNews();
