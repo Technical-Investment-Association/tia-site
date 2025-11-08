@@ -1,6 +1,96 @@
 <footer class="mt-16 border-t" style="border-color:var(--line);">
-    <div class="mx-auto max-w-7xl px-6 py-8 text-sm text-ash-500">
-      © TIA, All rights reserved.
+  <div class="mx-auto max-w-7xl px-6 py-10 text-sm text-ash-500">
+    <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
+
+      <!-- About / Contact -->
+      <div>
+        <h2 class="text-ash-700 font-medium mb-3">About TIA</h2>
+        <p class="mb-3">
+          Technical Investment Association (TIA) is a student-run club focused on investing,
+          markets, and applied finance.
+        </p>
+        <ul class="space-y-2">
+          <!--
+          <li>
+            <a href="/about" class="hover:text-ash-700 transition">About the club</a>
+          </li>
+          <li>
+            <a href="/team" class="hover:text-ash-700 transition">Board & committees</a>
+          </li>
+        -->
+          <li>
+            <a href="mailto:contact@tia.example" class="hover:text-ash-700 transition"
+               aria-label="Email TIA">technicalinvestmentassociation@gmail.com</a>
+          </li>
+          <li>
+            <!--
+            <address class="not-italic">
+              Add Address here
+            </address>
+          -->
+          </li>
+        </ul>
+      </div>
+
+      <!-- Quick links -->
+      <!--
+      <div>
+        <h2 class="text-ash-700 font-medium mb-3">Quick links</h2>
+        <ul class="space-y-2">
+          <li><a href="/events" class="hover:text-ash-700 transition">Events</a></li>
+          <li><a href="/join" class="hover:text-ash-700 transition">Join TIA</a></li>
+          <li><a href="/sponsors" class="hover:text-ash-700 transition">Partners & sponsors</a></li>
+          <li><a href="/resources" class="hover:text-ash-700 transition">Resources</a></li>
+        </ul>
+      </div>
+      -->
+
+      <!-- Social -->
+      <div>
+        <h2 class="text-ash-700 font-medium mb-3">Follow us</h2>
+        <ul class="space-y-2">
+          <li>
+            <a href="https://www.instagram.com/tia_dtu?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="hover:text-ash-700 transition" target="_blank" rel="noopener noreferrer" aria-label="Instagram">Instagram</a>
+          </li>
+          <li>
+            <a href="https://www.linkedin.com/company/technical-investment-association/" class="hover:text-ash-700 transition" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">LinkedIn</a>
+          </li>
+          <!--
+          <li>
+            <a href="https://github.com/Technical-Investment-Association" class="hover:text-ash-700 transition" target="_blank" rel="noopener noreferrer" aria-label="GitHub">GitHub</a>
+          </li>
+          -->
+          <!-- Add other platforms as needed -->
+        </ul>
+      </div>
+
+      <!-- Legal -->
+      <div>
+        <h2 class="text-ash-700 font-medium mb-3">Legal</h2>
+        <ul class="space-y-2">
+          <li><a href="/privacy" class="hover:text-ash-700 transition">Privacy Policy</a></li>
+          <li><a href="/terms" class="hover:text-ash-700 transition">Terms of Use</a></li>
+        </ul>
+      </div>
     </div>
-  </footer>
-  
+
+    <!-- Divider -->
+    <hr class="my-8 opacity-30" />
+
+<!-- Bottom line -->
+<div class="flex flex-col items-center justify-center gap-2 sm:flex-row sm:justify-center sm:items-center text-center">
+  <div>
+    <span>© <span id="year"></span> TIA. All rights reserved.</span>
+  </div>
+  <div class="space-x-4"></div>
+</div>
+
+
+  <!-- Auto year -->
+  <script>
+    (function () {
+      var el = document.getElementById('year');
+      if (el) el.textContent = new Date().getFullYear();
+    })();
+  </script>
+</footer>
