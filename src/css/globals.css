@@ -235,3 +235,28 @@ img {
   color: var(--beige);
 }
 
+.event-description.hidden {
+  display: none;
+}
+.event-description {
+  line-height: 1.5;
+}
+.toggle-description-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.event-description {
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  overflow: hidden;
+}
+.event-description.hidden {
+  max-height: 0;
+  opacity: 0;
+}
+.event-description:not(.hidden) {
+  max-height: 1000px; /* or something large enough */
+  opacity: 1;
+}

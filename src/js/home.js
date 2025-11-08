@@ -38,15 +38,14 @@ function eventCard(ev) {
   const company = ev.company || "";
   const dateStr = fmtShortDayMonth(ev.starts_at);
   const loc     = ev.location ? ` · ${ev.location}` : "";
-  const href    = `./event.html?id=${ev.id}`;
+  const description = ev.description?.trim() || "";
   const image   = ev.image_url
     ? `<img src="${ev.image_url}" alt="Poster for ${escapeHtml(title)}" loading="lazy" width="640" height="360" class="aspect-[16/9] w-full object-cover rounded-xl"/>`
     : `<div class="aspect-[16/9] rounded-xl bg-surface-2"></div>`;
 
-  // Fixed slots: title, company, meta (one line each) + fixed CTA area
   return `
     <div class="w-full max-w-sm md:max-w-md">
-      <article class="card card-hover h-full flex flex-col">
+      <article class="card card-hover flex flex-col">
         ${image}
         <div class="mt-4 flex-1 flex flex-col">
           <h3 class="font-semibold text-brand-navy h-6 overflow-hidden text-ellipsis whitespace-nowrap">
@@ -58,8 +57,11 @@ function eventCard(ev) {
           <p class="mt-1 text-sm meta h-5 overflow-hidden text-ellipsis whitespace-nowrap">
             ${escapeHtml(dateStr + loc)}
           </p>
-          <div class="mt-4 pt-2 border-t h-10 flex items-center" style="border-color: var(--line);">
-            <a href="${href}" class="inline-flex items-center gap-1 text-brand-navy hover:text-nav-brown font-medium">More →</a>
+          <div class="mt-4 pt-2 border-t">
+            <button class="toggle-description-btn text-brand-navy hover:text-nav-brown font-medium">
+              More <span aria-hidden="true">→</span>
+            </button>
+            <div class="event-description hidden mt-2 text-sm text-ash-700">${description}</div>
           </div>
         </div>
       </article>
@@ -78,6 +80,27 @@ function renderEvents() {
   const count = Math.min(3, events.length);
   const idxs = Array.from({ length: count }, (_, i) => (evIndex + i) % events.length);
   track.innerHTML = idxs.map(i => eventCard(events[i])).join("");
+  document.querySelectorAll(".toggle-description-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const allDescriptions = document.querySelectorAll(".event-description");
+    const allButtons = document.querySelectorAll(".toggle-description-btn");
+
+    const desc = btn.nextElementSibling;
+    const isOpening = desc.classList.contains("hidden");
+
+    // Collapse all descriptions
+    allDescriptions.forEach((d) => d.classList.add("hidden"));
+    allButtons.forEach((b) => {
+      b.innerHTML = 'More <span aria-hidden="true">→</span>';
+    });
+
+    // If this one was opening, show it
+    if (isOpening) {
+      desc.classList.remove("hidden");
+      btn.innerHTML = 'Less <span aria-hidden="true">↑</span>';
+    }
+  });
+});
 }
 
 async function loadEvents() {
