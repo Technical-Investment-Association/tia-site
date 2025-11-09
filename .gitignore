@@ -16,6 +16,10 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 *.log
+logs/
+
+# Vercel
+.vercel
 
 # OS / Editor
 .DS_Store
