@@ -27,6 +27,26 @@ const jobsStatus = document.getElementById("jobsStatus");
 const jobPrev    = document.getElementById("jobPrev");
 const jobNext    = document.getElementById("jobNext");
 
+/* ----- Responsive helpers for EVENTS ----- */
+const isDesktop = () => window.matchMedia("(min-width: 768px)").matches; // Tailwind md breakpoint
+let visibleCount = isDesktop() ? 3 : 1;
+
+function updateVisibleCountAndRerender() {
+  const next = isDesktop() ? 3 : 1;
+  if (next !== visibleCount) {
+    visibleCount = next;
+    renderEvents(); // re-render with new window size
+  }
+}
+
+// simple debounce so we don't spam renders while resizing
+let _rz;
+window.addEventListener("resize", () => {
+  clearTimeout(_rz);
+  _rz = setTimeout(updateVisibleCountAndRerender, 120);
+});
+
+
 /* =========================================
    EVENTS — windowed carousel over ALL items
    ========================================= */
@@ -44,7 +64,7 @@ function eventCard(ev) {
     : `<div class="aspect-[16/9] rounded-xl bg-surface-2"></div>`;
 
   return `
-    <div class="w-full max-w-sm md:max-w-md">
+    <div class="w-full max-w-full md:max-w-md">
       <article class="card card-hover flex flex-col">
         ${image}
         <div class="mt-4 flex-1 flex flex-col">
@@ -77,31 +97,27 @@ function renderEvents() {
   }
   btnPrev.disabled = btnNext.disabled = (events.length < 2);
 
-  const count = Math.min(3, events.length);
+  const count = Math.min(visibleCount, events.length);
   const idxs = Array.from({ length: count }, (_, i) => (evIndex + i) % events.length);
   track.innerHTML = idxs.map(i => eventCard(events[i])).join("");
+
+  // expand/collapse handlers (unchanged)
   document.querySelectorAll(".toggle-description-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const allDescriptions = document.querySelectorAll(".event-description");
-    const allButtons = document.querySelectorAll(".toggle-description-btn");
-
-    const desc = btn.nextElementSibling;
-    const isOpening = desc.classList.contains("hidden");
-
-    // Collapse all descriptions
-    allDescriptions.forEach((d) => d.classList.add("hidden"));
-    allButtons.forEach((b) => {
-      b.innerHTML = 'More <span aria-hidden="true">→</span>';
+    btn.addEventListener("click", () => {
+      const allDescriptions = document.querySelectorAll(".event-description");
+      const allButtons = document.querySelectorAll(".toggle-description-btn");
+      const desc = btn.nextElementSibling;
+      const isOpening = desc.classList.contains("hidden");
+      allDescriptions.forEach((d) => d.classList.add("hidden"));
+      allButtons.forEach((b) => { b.innerHTML = 'More <span aria-hidden="true">→</span>'; });
+      if (isOpening) {
+        desc.classList.remove("hidden");
+        btn.innerHTML = 'Less <span aria-hidden="true">↑</span>';
+      }
     });
-
-    // If this one was opening, show it
-    if (isOpening) {
-      desc.classList.remove("hidden");
-      btn.innerHTML = 'Less <span aria-hidden="true">↑</span>';
-    }
   });
-});
 }
+
 
 async function loadEvents() {
   eventsStatus.textContent = "Loading…";
