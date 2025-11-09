@@ -63,31 +63,44 @@ function eventCard(ev) {
     ? `<img src="${ev.image_url}" alt="Poster for ${escapeHtml(title)}" loading="lazy" width="640" height="360" class="aspect-[16/9] w-full object-cover rounded-xl"/>`
     : `<div class="aspect-[16/9] rounded-xl bg-surface-2"></div>`;
 
-  return `
-    <div class="w-full max-w-full md:max-w-md">
-      <article class="card card-hover flex flex-col">
-        ${image}
-        <div class="mt-4 flex-1 flex flex-col">
-          <h3 class="font-semibold text-brand-navy h-6 overflow-hidden text-ellipsis whitespace-nowrap">
-            ${escapeHtml(title)}
-          </h3>
-          <p class="text-sm text-ash-600 h-5 overflow-hidden text-ellipsis whitespace-nowrap">
-            ${escapeHtml(company)}
-          </p>
-          <p class="mt-1 text-sm meta h-5 overflow-hidden text-ellipsis whitespace-nowrap">
-            ${escapeHtml(dateStr + loc)}
-          </p>
-          <div class="mt-4 pt-2 border-t">
-            <button class="toggle-description-btn text-brand-navy hover:text-nav-brown font-medium">
-              More <span aria-hidden="true">→</span>
-            </button>
-            <div class="event-description hidden mt-2 text-sm text-ash-700">${description}</div>
+return `
+  <div class="w-full max-w-full md:max-w-md">
+    <article class="card card-hover flex flex-col">
+      ${image}
+      <div class="mt-4 flex-1 flex flex-col">
+        <h3 class="font-semibold text-brand-navy h-6 overflow-hidden text-ellipsis whitespace-nowrap">
+          ${escapeHtml(title)}
+        </h3>
+        <p class="text-sm text-ash-600 h-5 overflow-hidden text-ellipsis whitespace-nowrap">
+          ${escapeHtml(company)}
+        </p>
+        <p class="mt-1 text-sm meta h-5 overflow-hidden text-ellipsis whitespace-nowrap">
+          ${escapeHtml(dateStr + loc)}
+        </p>
+
+        <div class="mt-4 pt-2 border-t">
+          <button class="toggle-description-btn text-brand-navy hover:text-nav-brown font-medium">
+            More <span aria-hidden="true">→</span>
+          </button>
+
+          <div class="event-description hidden mt-2 text-sm text-ash-700 flex flex-col gap-3">
+            ${description}
+            ${
+              ev.apply_url
+                ? `<a href="${escapeHtml(ev.apply_url)}"
+                      class="inline-flex items-center gap-1 font-medium text-brand-navy hover:text-nav-brown"
+                      target="_blank" rel="noopener">
+                      Sign up <span aria-hidden="true">→</span>
+                   </a>`
+                : ""
+            }
           </div>
         </div>
-      </article>
-    </div>
-  `;
-}
+      </div>
+    </article>
+  </div>
+`;
+          }
 
 function renderEvents() {
   if (!events.length) {
