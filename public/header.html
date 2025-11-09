@@ -5,16 +5,23 @@
 
   <!-- Main row -->
   <div class="mx-auto max-w-7xl px-6 h-20 flex items-center justify-between">
-    <!-- Logo + wordmark -->
-    <a href="/index.html" aria-label="TIA Home" class="flex items-center gap-3 shrink-0">
-      <div class="logo-box md:h-9 md:w-9 lg:h-10 lg:w-10">
-        <img src="/assets/new_logo.png" alt="TIA logo" class="max-h-full max-w-full object-contain" />
-      </div>
-      <span class="text-2xl tracking-wide text-[var(--brand-brown)] select-none font-serif"
-            style="font-family:'Times New Roman','Georgia',serif">
-        Technical Investment Association
-      </span>
-    </a>
+<!-- Logo + wordmark -->
+<a href="/index.html" aria-label="TIA Home" class="flex items-center gap-3 shrink-0">
+  <div class="logo-box md:h-9 md:w-9 lg:h-10 lg:w-10">
+    <img src="/assets/new_logo.png" alt="TIA logo" class="max-h-full max-w-full object-contain" />
+  </div>
+
+  <!-- Full name on md+; short on xs/sm -->
+  <span class="hidden md:inline text-2xl tracking-wide text-[var(--brand-brown)] select-none font-serif"
+        style="font-family:'Times New Roman','Georgia',serif">
+    Technical Investment Association
+  </span>
+  <span class="md:hidden text-2xl tracking-wide text-[var(--brand-brown)] select-none font-serif"
+        style="font-family:'Times New Roman','Georgia',serif">
+    TIA
+  </span>
+</a>
+
 
     <!-- Desktop nav (even spacing via a fixed gap) -->
     <!--
@@ -86,3 +93,28 @@
   </div>
   -->
 </header>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const link = document.querySelector('a[aria-label="TIA Home"]');
+  if (!link) return;
+  const full = link.querySelector('span.md\\:inline');
+  const short = link.querySelector('span.md\\:hidden');
+
+  const fit = () => {
+    // Force-show full, measure overflow, then toggle
+    full.classList.remove('hidden');
+    short.classList.add('hidden');
+    // If link is overflowing its container, swap
+    const overflows = link.scrollWidth > link.clientWidth;
+    if (overflows) {
+      full.classList.add('hidden');
+      short.classList.remove('hidden');
+    }
+  };
+
+  fit();
+  window.addEventListener('resize', fit);
+});
+</script>
+
