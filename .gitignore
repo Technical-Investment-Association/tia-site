@@ -12,6 +12,7 @@ dist/
 .env
 .env.local
 .env.*.local
+!.env.example
 
 # VS Code and OS files
 .vscode/
@@ -20,3 +21,4 @@ dist/
 # Logs
 *.log
 logs/
+.env.local
