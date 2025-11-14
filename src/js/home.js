@@ -59,48 +59,53 @@ function eventCard(ev) {
   const dateStr = fmtShortDayMonth(ev.starts_at);
   const loc     = ev.location ? ` · ${ev.location}` : "";
   const description = ev.description?.trim() || "";
-  const image   = ev.image_url
+  const hasApply = !!ev.apply_url;
+  const moreLabel = hasApply ? "Read more &amp; sign up" : "More";
+
+  const image = ev.image_url
     ? `<img src="${ev.image_url}" alt="Poster for ${escapeHtml(title)}" loading="lazy" width="640" height="360" class="aspect-[16/9] w-full object-cover rounded-xl"/>`
     : `<div class="aspect-[16/9] rounded-xl bg-surface-2"></div>`;
 
-return `
-  <div class="w-full max-w-full md:max-w-md">
-    <article class="card card-hover flex flex-col">
-      ${image}
-      <div class="mt-4 flex-1 flex flex-col">
-        <h3 class="font-semibold text-brand-navy h-6 overflow-hidden text-ellipsis whitespace-nowrap">
-          ${escapeHtml(title)}
-        </h3>
-        <p class="text-sm text-ash-600 h-5 overflow-hidden text-ellipsis whitespace-nowrap">
-          ${escapeHtml(company)}
-        </p>
-        <p class="mt-1 text-sm meta h-5 overflow-hidden text-ellipsis whitespace-nowrap">
-          ${escapeHtml(dateStr + loc)}
-        </p>
+  return `
+    <div class="w-full max-w-full md:max-w-md">
+      <article class="card card-hover flex flex-col">
+        ${image}
+        <div class="mt-4 flex-1 flex flex-col">
+          <h3 class="font-semibold text-brand-navy h-6 overflow-hidden text-ellipsis whitespace-nowrap">
+            ${escapeHtml(title)}
+          </h3>
+          <p class="text-sm text-ash-600 h-5 overflow-hidden text-ellipsis whitespace-nowrap">
+            ${escapeHtml(company)}
+          </p>
+          <p class="mt-1 text-sm meta h-5 overflow-hidden text-ellipsis whitespace-nowrap">
+            ${escapeHtml(dateStr + loc)}
+          </p>
 
-        <div class="mt-4 pt-2 border-t">
-          <button class="toggle-description-btn text-brand-navy hover:text-nav-brown font-medium">
-            More <span aria-hidden="true">→</span>
-          </button>
+          <div class="mt-4 pt-2 border-t">
+            <button
+              class="toggle-description-btn text-brand-navy hover:text-nav-brown font-medium"
+              data-more-label="${moreLabel}">
+              ${moreLabel} <span aria-hidden="true">→</span>
+            </button>
 
-          <div class="event-description hidden mt-2 text-sm text-ash-700 flex flex-col gap-3">
-            ${description}
-            ${
-              ev.apply_url
-                ? `<a href="${escapeHtml(ev.apply_url)}"
-                      class="inline-flex items-center gap-1 font-medium text-brand-navy hover:text-nav-brown"
-                      target="_blank" rel="noopener">
-                      Sign up <span aria-hidden="true">→</span>
-                   </a>`
-                : ""
-            }
+            <div class="event-description hidden mt-2 text-sm text-ash-700 flex flex-col gap-3">
+              ${description}
+              ${
+                hasApply
+                  ? `<a href="${escapeHtml(ev.apply_url)}"
+                        class="inline-flex items-center gap-1 font-medium text-brand-navy hover:text-nav-brown"
+                        target="_blank" rel="noopener">
+                        Sign up <span aria-hidden="true">→</span>
+                     </a>`
+                  : ""
+              }
+            </div>
           </div>
         </div>
-      </div>
-    </article>
-  </div>
-`;
-          }
+      </article>
+    </div>
+  `;
+ }
 
 function renderEvents() {
   if (!events.length) {
@@ -115,20 +120,28 @@ function renderEvents() {
   track.innerHTML = idxs.map(i => eventCard(events[i])).join("");
 
   // expand/collapse handlers (unchanged)
-  document.querySelectorAll(".toggle-description-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const allDescriptions = document.querySelectorAll(".event-description");
-      const allButtons = document.querySelectorAll(".toggle-description-btn");
-      const desc = btn.nextElementSibling;
-      const isOpening = desc.classList.contains("hidden");
-      allDescriptions.forEach((d) => d.classList.add("hidden"));
-      allButtons.forEach((b) => { b.innerHTML = 'More <span aria-hidden="true">→</span>'; });
-      if (isOpening) {
-        desc.classList.remove("hidden");
-        btn.innerHTML = 'Less <span aria-hidden="true">↑</span>';
-      }
+ document.querySelectorAll(".toggle-description-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const allDescriptions = document.querySelectorAll(".event-description");
+    const allButtons = document.querySelectorAll(".toggle-description-btn");
+
+    const desc = btn.nextElementSibling;
+    const isOpening = desc.classList.contains("hidden");
+
+    // Collapse all
+    allDescriptions.forEach((d) => d.classList.add("hidden"));
+    allButtons.forEach((b) => {
+      const base = b.dataset.moreLabel || "More";
+      b.innerHTML = `${base} <span aria-hidden="true">→</span>`;
     });
+
+    // Toggle current
+    if (isOpening) {
+      desc.classList.remove("hidden");
+      btn.innerHTML = `Less <span aria-hidden="true">↑</span>`;
+    }
   });
+});
 }
 
 
