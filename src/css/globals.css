@@ -136,7 +136,7 @@ img {
   will-change: transform;
 }
 .card-hover:hover {
-  transform: scale(1.03);
+  transform: scale(1.01);
   box-shadow: 0 6px 18px rgba(16, 24, 40, .12);
 }
 
